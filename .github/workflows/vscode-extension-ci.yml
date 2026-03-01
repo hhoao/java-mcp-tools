@@ -1,0 +1,100 @@
+name: VSCode Extension CI
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'scripts/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/vscode-extension-ci.yml'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    outputs:
+      GIT_TAG: ${{ steps.set-tag.outputs.GIT_TAG }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build extension
+        run: pnpm esbuild:base --minify
+
+      - name: Set GIT_TAG
+        id: set-tag
+        if: runner.os == 'Linux'
+        run: |
+          git fetch --tags origin
+          GIT_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -n "$GIT_TAG" ] && [ "$(git rev-list -n 1 $GIT_TAG 2>/dev/null || echo "")" = "$(git rev-parse HEAD)" ]; then
+            echo "GIT_TAG=${GIT_TAG}" >> $GITHUB_OUTPUT
+            echo "Git tag: ${GIT_TAG}"
+          else
+            echo "GIT_TAG=" >> $GITHUB_OUTPUT
+            echo "No matching tag found for current commit"
+          fi
+
+  publish:
+    needs: build
+    if: startsWith(needs.build.outputs.GIT_TAG, 'v')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build extension
+        run: pnpm esbuild:base --minify
+
+      - name: Publish to VS Marketplace
+        run: pnpm publish:vs-marketplace
+        env:
+          VSCE_PAT: ${{ secrets.VS_MARKETPLACE_TOKEN }}
+
+      - name: Publish to Open VSX
+        run: pnpm publish:open-vsx
+        env:
+          OVSX_PAT: ${{ secrets.OPEN_VSX_TOKEN }}
+
+      - name: Generate changelog
+        run: npx changelogithub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
