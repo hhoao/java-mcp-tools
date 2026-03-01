@@ -13,6 +13,7 @@
     "type": "git",
     "url": "https://github.com/hhoao/java-mcp-tools"
   },
+  "packageManager": "pnpm@10.22.0",
   "activationEvents": [
     "onLanguage:java",
     "workspaceContains:**/pom.xml",
