@@ -1,0 +1,50 @@
+{
+  "name": "java-mcp-tools",
+  "displayName": "Java MCP Tools",
+  "description": "提供 Java 相关 MCP 工具：根据类名查 jar 路径、反编译 jar 内类源码，基于 redhat.java (jdt://) 与 VSCode MCP Bridge",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.99.1"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:java",
+    "workspaceContains:**/pom.xml",
+    "workspaceContains:**/build.gradle"
+  ],
+  "main": "./out/src/extension.js",
+  "contributes": {},
+  "scripts": {
+    "vscode:prepublish": "pnpm esbuild:base --minify",
+    "clean": "npx rimraf -rf ./out",
+    "esbuild:base": "tsx scripts/esbuild.ts",
+    "esbuild:watch": "pnpm esbuild:base --sourcemap --watch",
+    "esbuild:analyze": "pnpm esbuild:base --minify --metafile --analyze && esbuild-visualizer --metadata ./meta.json --open",
+    "package": "vsce package --no-dependencies"
+  },
+  "extensionDependencies": [
+    "redhat.java",
+    "yutengjing.vscode-mcp-bridge"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "~24.10.1",
+    "@types/vscode": "1.99.1",
+    "@typescript/native-preview": "latest",
+    "@vscode/test-electron": "^2.4.1",
+    "@vscode/vsce": "^3.6.0",
+    "@yutengjing/eslint-config-typescript": "^2.6.1",
+    "@yutengjing/prettier-config": "^2.0.0",
+    "bumpp": "^10.3.1",
+    "esbuild": "~0.25.10",
+    "esbuild-visualizer": "^0.7.0",
+    "eslint": "^9.39.1",
+    "prettier": "^3.6.2",
+    "rimraf": "^6.0.1",
+    "tsx": "^4.20.6",
+    "typescript": "~5.9.3"
+  }
+}
