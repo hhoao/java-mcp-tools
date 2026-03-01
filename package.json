@@ -2,7 +2,7 @@
   "name": "java-mcp-tools",
   "displayName": "Java MCP Tools",
   "description": "提供 Java 相关 MCP 工具：根据类名查 jar 路径、反编译 jar 内类源码，基于 redhat.java (jdt://) 与 VSCode MCP Bridge",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "engines": {
     "vscode": "^1.99.1"
   },
