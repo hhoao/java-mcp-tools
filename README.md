@@ -20,7 +20,7 @@
 
 ## Overview
 
-Java MCP Tools 是 VSCode/Cursor 扩展，通过 [VSCode MCP Bridge](https://github.com/yutengjing/vscode-mcp-bridge) 向 MCP 客户端（如 Cursor）提供 Java 相关工具。基于 redhat.java 的 `jdt://` 解析 classpath，实现按类名查 jar 路径与反编译类源码。
+Java MCP Tools 是 VSCode/Cursor 扩展，通过 [VSCode MCP Bridge](https://github.com/tjx666/vscode-mcp) 向 MCP 客户端（如 Cursor）提供 Java 相关工具。基于 redhat.java 的 `jdt://` 解析 classpath，实现按类名查 jar 路径与反编译类源码。
 
 ## MCP 工具
 

@@ -2,6 +2,7 @@ export interface DynamicToolDefinition {
   name: string;
   description: string;
   inputSchema: Record<string, unknown>;
+  outputSchema?: Record<string, unknown>;
   handler: (input: Record<string, unknown>) => Promise<unknown>;
 }
 

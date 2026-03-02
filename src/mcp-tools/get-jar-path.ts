@@ -2,13 +2,8 @@ import type * as vscode from "vscode";
 
 import type { DynamicToolDefinition } from "../extension-api";
 import { resolveJdtUri } from "../utils/resolve-jdt-uri";
-
-interface JarPathResult {
-  query: string;
-  jar_path?: string;
-  uri?: string;
-  error?: string;
-}
+import type { JarPathResult } from "./schemas/get-jar-path";
+import { GET_JAR_PATH_INPUT_SCHEMA, GET_JAR_PATH_OUTPUT_SCHEMA } from "./schemas/get-jar-path";
 
 /**
  * jdt:// URI query is decoded as: =projectName/\/absolute\/path\/to\/lib.jar=...
@@ -41,25 +36,21 @@ async function findJarPath(query: string): Promise<JarPathResult> {
   return { query, jar_path: jarPath, uri: uri!.toString() };
 }
 
-const GET_JAR_PATH_SCHEMA: Record<string, unknown> = {
-  type: "object",
-  properties: {
-    queries: {
-      type: "array",
-      items: { type: "string" },
-      minItems: 1,
-      description: "One or more Java class names to look up, e.g. ['com.foo.Bar', 'ObjectMapper']",
-    },
-  },
-  required: ["queries"],
-};
+const DESCRIPTION = `Find the jar file path that contains one or more Java classes, using redhat.java (jdt://).
+
+**Return Format:**
+Array of results with:
+- query: original class name
+- jar_path: absolute path to the jar file containing the class
+- uri: jdt:// URI of the resolved class
+- error: error message if the class could not be resolved
+`;
 
 export const JAVA_CLASS_INDEX_GET_JAR_PATH: DynamicToolDefinition = {
   name: "get_jar_path",
-  description:
-    "Find the jar file path that contains one or more Java classes, using redhat.java (jdt://). " +
-    "Accepts FQN (e.g. com.foo.Bar) or simple class names. Returns the absolute path to the jar.",
-  inputSchema: GET_JAR_PATH_SCHEMA,
+  description: DESCRIPTION,
+  inputSchema: GET_JAR_PATH_INPUT_SCHEMA,
+  outputSchema: GET_JAR_PATH_OUTPUT_SCHEMA,
   handler: async (input) => {
     const queries = input.queries as string[];
     if (!Array.isArray(queries) || queries.length === 0) {
