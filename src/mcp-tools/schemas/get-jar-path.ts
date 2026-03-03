@@ -4,7 +4,7 @@ const GetJarPathInputSchema = z.object({
   queries: z
     .array(z.string())
     .min(1)
-    .describe("One or more Java class names to look up, e.g. ['com.foo.Bar', 'ObjectMapper']"),
+    .describe("Class names or jar names, e.g. ['com.foo.Bar', 'my-lib.jar']"),
 });
 
 const JarPathResultSchema = z.object({

@@ -25,7 +25,7 @@ class Logger {
         this.channel!.append(`[${level}] ${message}\n`);
     }
 
-    private _formatJson(obj: any): string {
+    private _formatJson(obj: unknown): string {
         try {
             return JSON.stringify(obj, null, 2);
         } catch {
@@ -48,7 +48,7 @@ class Logger {
     /**
      * Log service call with structured information
      */
-    logServiceCall(method: string, payload: any, result: any) {
+    logServiceCall(method: string, payload: unknown, result: unknown) {
         const timestamp = new Date().toISOString();
         const message = [
             `[${method}] Service Call at ${timestamp}`,
@@ -63,7 +63,7 @@ class Logger {
     /**
      * Log service error with structured information
      */
-    logServiceError(method: string, payload: any, error: any) {
+    logServiceError(method: string, payload: unknown, error: unknown) {
         const timestamp = new Date().toISOString();
         const message = [
             `[${method}] Service Error at ${timestamp}`,

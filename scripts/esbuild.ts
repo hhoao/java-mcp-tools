@@ -16,7 +16,7 @@ const options: BuildOptions = {
     outdir: './out/src',
     external: [
         'vscode',
-        'typescript', // vue-component-meta
+        'typescript',
     ],
     format: 'cjs',
     platform: 'node',
