@@ -10,7 +10,6 @@ import { extractJarPath, resolveJarPathFromInput } from "../utils/jar-utils";
 import { resolveJdtUri } from "../utils/resolve-jdt-uri";
 import {
   READ_JAR_OR_SOURCE_ENTRY_INPUT_SCHEMA,
-  READ_JAR_OR_SOURCE_ENTRY_OUTPUT_SCHEMA,
 } from "./schemas/read-jar-or-source-entry";
 
 function entryPathToFqn(entryPath: string): string {
@@ -61,7 +60,6 @@ export const JAVA_CLASS_INDEX_READ_JAR_OR_SOURCE_ENTRY: DynamicToolDefinition = 
   name: "read_jar_or_source_entry",
   description: DESCRIPTION,
   inputSchema: READ_JAR_OR_SOURCE_ENTRY_INPUT_SCHEMA,
-  outputSchema: READ_JAR_OR_SOURCE_ENTRY_OUTPUT_SCHEMA,
   handler: async (input) => {
     const entryPath = input.entry_path as string;
     if (!entryPath || typeof entryPath !== "string") {

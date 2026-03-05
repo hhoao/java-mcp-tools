@@ -7,7 +7,7 @@ import { extractJarPath } from "../utils/jar-utils";
 import { resolveJarFromMaven } from "../utils/maven-repo";
 import { resolveJdtUri } from "../utils/resolve-jdt-uri";
 import type { JarPathResult } from "./schemas/get-jar-path";
-import { GET_JAR_PATH_INPUT_SCHEMA, GET_JAR_PATH_OUTPUT_SCHEMA } from "./schemas/get-jar-path";
+import { GET_JAR_PATH_INPUT_SCHEMA } from "./schemas/get-jar-path";
 
 function isJarQuery(q: string): boolean {
   return q.trim().toLowerCase().endsWith(".jar");
@@ -53,7 +53,6 @@ export const JAVA_CLASS_INDEX_GET_JAR_PATH: DynamicToolDefinition = {
   name: "get_jar_path",
   description: DESCRIPTION,
   inputSchema: GET_JAR_PATH_INPUT_SCHEMA,
-  outputSchema: GET_JAR_PATH_OUTPUT_SCHEMA,
   handler: async (input) => {
     const queries = input.queries as string[];
     if (!Array.isArray(queries) || queries.length === 0) {

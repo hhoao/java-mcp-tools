@@ -4,7 +4,6 @@ import type { DynamicToolDefinition } from "../extension-api";
 import { resolveJarPathFromInput } from "../utils/jar-utils";
 import {
   LIST_JAR_ENTRIES_INPUT_SCHEMA,
-  LIST_JAR_ENTRIES_OUTPUT_SCHEMA,
 } from "./schemas/list-jar-entries";
 
 const DESCRIPTION = `List entries (files/dirs) inside a jar, equivalent to 'jar -tf'.
@@ -17,7 +16,6 @@ export const JAVA_CLASS_INDEX_LIST_JAR_ENTRIES: DynamicToolDefinition = {
   name: "list_jar_entries",
   description: DESCRIPTION,
   inputSchema: LIST_JAR_ENTRIES_INPUT_SCHEMA,
-  outputSchema: LIST_JAR_ENTRIES_OUTPUT_SCHEMA,
   handler: async (input) => {
     const resolved = await resolveJarPathFromInput({
       jar: input.jar as string | undefined,

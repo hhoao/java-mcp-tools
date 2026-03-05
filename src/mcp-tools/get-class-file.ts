@@ -3,7 +3,7 @@ import * as vscode from "vscode";
 import type { DynamicToolDefinition } from "../extension-api";
 import { resolveJdtUri } from "../utils/resolve-jdt-uri";
 import type { ClassFileResult } from "./schemas/get-class-file";
-import { GET_CLASS_FILE_INPUT_SCHEMA, GET_CLASS_FILE_OUTPUT_SCHEMA } from "./schemas/get-class-file";
+import { GET_CLASS_FILE_INPUT_SCHEMA } from "./schemas/get-class-file";
 
 function extractLines(text: string, startLine: number, endLine: number): { source: string; totalLines: number } {
   const lines = text.split("\n");
@@ -42,7 +42,6 @@ export const JAVA_CLASS_INDEX_GET_CLASS_FILE: DynamicToolDefinition = {
   name: "get_class_content",
   description: DESCRIPTION,
   inputSchema: GET_CLASS_FILE_INPUT_SCHEMA,
-  outputSchema: GET_CLASS_FILE_OUTPUT_SCHEMA,
   handler: async (input) => {
     const queries = input.queries as string[];
     if (!Array.isArray(queries) || queries.length === 0) {
